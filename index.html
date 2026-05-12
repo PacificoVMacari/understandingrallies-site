@@ -1,0 +1,599 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Understanding Rallies develops squash performance analysis software, including the UR Squash rally logging and analytics platform." />
+  <title>Understanding Rallies | UR Squash Analytics</title>
+  <style>
+    :root {
+      --blue-950: #07142f;
+      --blue-900: #0b1f46;
+      --blue-800: #102a5c;
+      --gold: #d7a84f;
+      --gold-light: #f0cf82;
+      --text: #f7f2e8;
+      --muted: #c8d0df;
+      --card: rgba(255, 255, 255, 0.055);
+      --card-border: rgba(240, 207, 130, 0.18);
+      --shadow: rgba(0, 0, 0, 0.25);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: Arial, Helvetica, sans-serif;
+      background:
+        radial-gradient(circle at top left, rgba(215, 168, 79, 0.18), transparent 35%),
+        radial-gradient(circle at top right, rgba(27, 73, 156, 0.4), transparent 38%),
+        linear-gradient(135deg, var(--blue-950), var(--blue-900) 52%, #061026);
+      color: var(--text);
+      line-height: 1.6;
+      min-height: 100vh;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    .container {
+      width: min(1120px, calc(100% - 40px));
+      margin: 0 auto;
+    }
+
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 20;
+      background: rgba(7, 20, 47, 0.86);
+      backdrop-filter: blur(14px);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    }
+
+    .nav {
+      min-height: 76px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 24px;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-weight: 800;
+      letter-spacing: 0.04em;
+    }
+
+    .nav-logo {
+      width: 58px;
+      height: 58px;
+      object-fit: contain;
+      border-radius: 14px;
+      box-shadow: 0 10px 24px rgba(0,0,0,0.22);
+      background: rgba(255,255,255,0.04);
+      padding: 4px;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 24px;
+      align-items: center;
+      color: var(--muted);
+      font-size: 0.95rem;
+    }
+
+    .nav-links a:hover {
+      color: var(--gold-light);
+    }
+
+    .button {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 46px;
+      padding: 0 20px;
+      border-radius: 999px;
+      background: linear-gradient(135deg, var(--gold-light), var(--gold));
+      color: #07142f;
+      font-weight: 800;
+      box-shadow: 0 12px 30px rgba(215, 168, 79, 0.2);
+      border: none;
+    }
+
+    .button.secondary {
+      background: rgba(255, 255, 255, 0.06);
+      color: var(--text);
+      border: 1px solid rgba(255, 255, 255, 0.14);
+      box-shadow: none;
+    }
+
+    .hero {
+      padding: 94px 0 78px;
+    }
+
+    .hero-grid {
+      display: grid;
+      grid-template-columns: 1.08fr 0.92fr;
+      gap: 56px;
+      align-items: center;
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 7px 12px;
+      border: 1px solid rgba(215, 168, 79, 0.3);
+      border-radius: 999px;
+      color: var(--gold-light);
+      background: rgba(215, 168, 79, 0.08);
+      font-weight: 700;
+      font-size: 0.86rem;
+      margin-bottom: 22px;
+    }
+
+    h1 {
+      font-size: clamp(2.55rem, 6vw, 5.15rem);
+      line-height: 0.98;
+      letter-spacing: -0.06em;
+      margin-bottom: 24px;
+    }
+
+    h1 span {
+      color: var(--gold-light);
+    }
+
+    .hero p {
+      color: var(--muted);
+      font-size: 1.17rem;
+      max-width: 650px;
+      margin-bottom: 30px;
+    }
+
+    .hero-actions {
+      display: flex;
+      gap: 14px;
+      flex-wrap: wrap;
+      margin-bottom: 34px;
+    }
+
+    .trust-row {
+      display: flex;
+      gap: 20px;
+      flex-wrap: wrap;
+      color: var(--muted);
+      font-size: 0.94rem;
+    }
+
+    .trust-row strong {
+      color: var(--text);
+    }
+
+    .app-card {
+      background: linear-gradient(180deg, rgba(255,255,255,0.08), rgba(255,255,255,0.035));
+      border: 1px solid var(--card-border);
+      border-radius: 32px;
+      padding: 22px;
+      box-shadow: 0 28px 80px rgba(0, 0, 0, 0.3);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .app-card::before {
+      content: "";
+      position: absolute;
+      inset: -120px -120px auto auto;
+      width: 250px;
+      height: 250px;
+      background: rgba(215, 168, 79, 0.14);
+      border-radius: 50%;
+      filter: blur(4px);
+    }
+
+    .mock-window {
+      position: relative;
+      border-radius: 24px;
+      overflow: hidden;
+      background: #081832;
+      border: 1px solid rgba(255,255,255,0.12);
+    }
+
+    .window-top {
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      padding: 14px 16px;
+      background: rgba(255,255,255,0.05);
+      border-bottom: 1px solid rgba(255,255,255,0.08);
+    }
+
+    .dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.35);
+    }
+
+    .court {
+      height: 390px;
+      padding: 26px;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 18px;
+    }
+
+    .court-panel {
+      border-radius: 18px;
+      border: 1px solid rgba(240, 207, 130, 0.24);
+      background: rgba(255,255,255,0.035);
+      padding: 18px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .court-title {
+      color: var(--gold-light);
+      font-weight: 800;
+      font-size: 0.86rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    .grid-court {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      grid-template-rows: repeat(3, 1fr);
+      gap: 7px;
+      flex: 1;
+      margin: 18px 0;
+    }
+
+    .cell {
+      border-radius: 10px;
+      border: 1px solid rgba(255,255,255,0.12);
+      background: rgba(255,255,255,0.04);
+    }
+
+    .cell.active {
+      background: rgba(215,168,79,0.6);
+      box-shadow: 0 0 22px rgba(215,168,79,0.25);
+    }
+
+    .metric {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      color: var(--muted);
+      font-size: 0.9rem;
+      padding-top: 12px;
+      border-top: 1px solid rgba(255,255,255,0.08);
+    }
+
+    section {
+      padding: 72px 0;
+    }
+
+    .section-head {
+      max-width: 760px;
+      margin-bottom: 34px;
+    }
+
+    h2 {
+      font-size: clamp(2rem, 4vw, 3.2rem);
+      line-height: 1.05;
+      letter-spacing: -0.04em;
+      margin-bottom: 16px;
+    }
+
+    .section-head p,
+    .privacy-box p,
+    .contact-card p {
+      color: var(--muted);
+    }
+
+    .feature-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 18px;
+    }
+
+    .feature-card,
+    .privacy-box,
+    .contact-card {
+      background: var(--card);
+      border: 1px solid var(--card-border);
+      border-radius: 24px;
+      padding: 24px;
+      box-shadow: 0 18px 44px rgba(0,0,0,0.16);
+    }
+
+    .feature-card h3 {
+      margin: 14px 0 8px;
+      color: var(--text);
+      font-size: 1.2rem;
+    }
+
+    .feature-card p {
+      color: var(--muted);
+      font-size: 0.98rem;
+    }
+
+    .icon {
+      width: 44px;
+      height: 44px;
+      display: grid;
+      place-items: center;
+      border-radius: 14px;
+      background: rgba(215,168,79,0.13);
+      border: 1px solid rgba(215,168,79,0.24);
+      color: var(--gold-light);
+      font-weight: 900;
+    }
+
+    .split {
+      display: grid;
+      grid-template-columns: 0.9fr 1.1fr;
+      gap: 32px;
+      align-items: stretch;
+    }
+
+    .privacy-box ul {
+      margin: 18px 0 0 20px;
+      color: var(--muted);
+    }
+
+    .privacy-box li {
+      margin-bottom: 10px;
+    }
+
+    .contact-card {
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      gap: 28px;
+    }
+
+    .contact-list {
+      display: grid;
+      gap: 12px;
+    }
+
+    .contact-item {
+      padding: 16px;
+      border-radius: 16px;
+      background: rgba(255,255,255,0.045);
+      border: 1px solid rgba(255,255,255,0.09);
+      color: var(--muted);
+    }
+
+    .contact-item strong {
+      display: block;
+      color: var(--text);
+      margin-bottom: 4px;
+    }
+
+    footer {
+      padding: 34px 0;
+      border-top: 1px solid rgba(255,255,255,0.08);
+      color: var(--muted);
+      font-size: 0.92rem;
+    }
+
+    .footer-row {
+      display: flex;
+      justify-content: space-between;
+      gap: 20px;
+      flex-wrap: wrap;
+    }
+
+    @media (max-width: 880px) {
+      .hero-grid,
+      .split {
+        grid-template-columns: 1fr;
+      }
+
+      .feature-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .nav-links {
+        display: none;
+      }
+
+      .court {
+        height: auto;
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="container nav">
+      <a class="brand" href="#top" aria-label="Understanding Rallies home">
+        <img src="logo.png" alt="Understanding Rallies logo" class="nav-logo" />
+        <span>UNDERSTANDING RALLIES</span>
+      </a>
+      <nav class="nav-links" aria-label="Main navigation">
+        <a href="#features">Features</a>
+        <a href="#store">Microsoft Store</a>
+        <a href="#privacy">Privacy</a>
+        <a href="#contact">Contact</a>
+      </nav>
+    </div>
+  </header>
+
+  <main id="top">
+    <section class="hero">
+      <div class="container hero-grid">
+        <div>
+          <div class="eyebrow">Official platform of Understanding Rallies</div>
+          <h1><span>Understanding Rallies</span><br>performance analysis for modern squash.</h1>
+          <p>
+            UR Squash is the flagship analysis platform developed by Understanding Rallies, helping players and coaches log rallies, analyse shot patterns, and transform match footage into actionable performance insight.
+          </p>
+          <div style="margin-bottom: 28px;">
+            <img src="logo.png" alt="UR Squash logo" style="width: 240px; max-width: 100%; filter: drop-shadow(0 12px 26px rgba(0,0,0,0.28));" />
+          </div>
+
+          <div class="hero-actions">
+            <a class="button" href="#contact">Contact UR Squash</a>
+            <a class="button secondary" href="#features">Explore features</a>
+          </div>
+          <div class="trust-row" aria-label="Product highlights">
+            <span><strong>Built for:</strong> squash players & coaches</span>
+            <span><strong>Focus:</strong> rally understanding</span>
+            <span><strong>Status:</strong> Microsoft Store release in progress</span>
+          </div>
+        </div>
+
+        <aside class="app-card" aria-label="Understanding Rallies app preview">
+          <div class="mock-window">
+            <div class="window-top">
+              <span class="dot"></span><span class="dot"></span><span class="dot"></span>
+            </div>
+            <div class="court">
+              <div class="court-panel">
+                <div class="court-title">Shot placement</div>
+                <div class="grid-court" aria-hidden="true">
+                  <span class="cell"></span><span class="cell active"></span><span class="cell"></span>
+                  <span class="cell"></span><span class="cell"></span><span class="cell active"></span>
+                  <span class="cell active"></span><span class="cell"></span><span class="cell"></span>
+                </div>
+                <div class="metric"><span>Rallies logged</span><strong>24</strong></div>
+              </div>
+              <div class="court-panel">
+                <div class="court-title">Outcome profile</div>
+                <div class="grid-court" aria-hidden="true">
+                  <span class="cell active"></span><span class="cell"></span><span class="cell"></span>
+                  <span class="cell"></span><span class="cell active"></span><span class="cell"></span>
+                  <span class="cell"></span><span class="cell"></span><span class="cell active"></span>
+                </div>
+                <div class="metric"><span>Analysis outputs</span><strong>Ready</strong></div>
+              </div>
+            </div>
+          </div>
+        </aside>
+      </div>
+    </section>
+
+    <section id="features">
+      <div class="container">
+        <div class="section-head">
+          <h2>Software developed by Understanding Rallies.</h2>
+          <p>
+            Understanding Rallies focuses on building software tools that capture the details that matter in squash: rally flow, shot location, winners, errors, and repeatable coaching feedback.
+          </p>
+        </div>
+        <div class="feature-grid">
+          <article class="feature-card">
+            <div class="icon">01</div>
+            <h3>Structured rally logging</h3>
+            <p>Record shot-by-shot rally information from match or practice footage using a clear court-based tagging workflow.</p>
+          </article>
+          <article class="feature-card">
+            <div class="icon">02</div>
+            <h3>Shot and outcome profiles</h3>
+            <p>Transform raw rally events into visual summaries that help identify strengths, weaknesses, and patterns of play.</p>
+          </article>
+          <article class="feature-card">
+            <div class="icon">03</div>
+            <h3>Coach-friendly outputs</h3>
+            <p>Produce analysis that can support feedback sessions, player development, and more intentional practice planning.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section id="store">
+      <div class="container split">
+        <div class="section-head">
+          <h2>Preparing UR Squash for Microsoft Store release.</h2>
+          <p>
+            Understanding Rallies is currently preparing UR Squash for publication on the Microsoft Store. More screenshots, release notes, and installation guidance will be added as development progresses.
+          </p>
+        </div>
+        <div class="privacy-box">
+          <h3>Current release status</h3>
+          <ul>
+            <li>Desktop app for squash rally logging and analysis.</li>
+            <li>Designed for local video review and performance feedback.</li>
+            <li>Microsoft Store listing and verification in progress.</li>
+            <li>Support and privacy information available below.</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <section id="privacy">
+      <div class="container split">
+        <div class="section-head">
+          <h2>Understanding Rallies privacy approach.</h2>
+          <p>
+            This section can be expanded into a full privacy policy page before Microsoft Store submission. The wording below is a suitable starting point for a local-first desktop app.
+          </p>
+        </div>
+        <div class="privacy-box">
+          <h3>Privacy summary</h3>
+          <p>
+            UR Squash is designed to process squash footage and rally data locally on the user's device. Video files and analysis outputs are not uploaded to Understanding Rallies servers by default.
+          </p>
+          <ul>
+            <li>Users choose which video files or session files to analyse.</li>
+            <li>Analysis outputs are stored locally on the user's computer.</li>
+            <li>No account is required for the basic desktop workflow.</li>
+            <li>Support enquiries can be sent using the contact email below.</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <section id="contact">
+      <div class="container split">
+        <div class="section-head">
+          <h2>Contact Understanding Rallies.</h2>
+          <p>
+            For support, partnership enquiries, or questions about UR Squash and future products, contact Understanding Rallies using the business email below.
+          </p>
+        </div>
+        <div class="contact-card">
+          <div class="contact-list">
+            <div class="contact-item">
+              <strong>Email</strong>
+              Replace this with your branded business email
+            </div>
+            <div class="contact-item">
+              <strong>Website</strong>
+              UnderstandingRallies.com
+            </div>
+            <div class="contact-item">
+              <strong>Company</strong>
+              Understanding Rallies
+            </div>
+          </div>
+          <a class="button" href="mailto:pacifico@understandingrallies.com">Email Understanding Rallies</a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="container footer-row">
+      <span>© <span id="year"></span> Understanding Rallies. All rights reserved.</span>
+      <span>Developer of UR Squash performance analysis software.</span>
+    </div>
+  </footer>
+
+  <script>
+    document.getElementById('year').textContent = new Date().getFullYear();
+  </script>
+</body>
+</html>
