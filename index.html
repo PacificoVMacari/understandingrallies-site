@@ -2,8 +2,8 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="description" content="Understanding Rallies develops squash performance analysis software, including UR Logger — a rally logging and analytics app available on the Microsoft Store." />
-  <title>Understanding Rallies | UR Squash Analytics</title>
+  <meta name="description" content="Understanding Rallies develops squash software for performance analysis and coaching, including UR Logger and UR Coaching Planner — tools for logging rallies, planning sessions, reviewing players, and building a shared drill library." />
+  <title>Understanding Rallies | Squash Analytics & Coaching Software</title>
   <style>
     :root {
       --blue-950: #07142f;
@@ -379,6 +379,155 @@
       margin-bottom: 4px;
     }
 
+
+
+    .planner-showcase {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 22px;
+      align-items: stretch;
+    }
+
+    .planner-panel {
+      background: linear-gradient(180deg, rgba(255,255,255,0.075), rgba(255,255,255,0.035));
+      border: 1px solid var(--card-border);
+      border-radius: 28px;
+      padding: 26px;
+      box-shadow: 0 24px 64px rgba(0,0,0,0.22);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .planner-panel::after {
+      content: "";
+      position: absolute;
+      width: 190px;
+      height: 190px;
+      right: -80px;
+      top: -80px;
+      border-radius: 50%;
+      background: rgba(215,168,79,0.12);
+      pointer-events: none;
+    }
+
+    .planner-panel h3 {
+      color: var(--gold-light);
+      font-size: 1.35rem;
+      margin-bottom: 10px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .planner-panel p {
+      color: var(--muted);
+      margin-bottom: 18px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .planner-list {
+      list-style: none;
+      display: grid;
+      gap: 10px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .planner-list li {
+      padding: 14px 16px;
+      border-radius: 16px;
+      background: rgba(255,255,255,0.045);
+      border: 1px solid rgba(255,255,255,0.09);
+      color: var(--muted);
+    }
+
+    .planner-list strong {
+      color: var(--text);
+    }
+
+    .planner-mock {
+      display: grid;
+      gap: 12px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .planner-row {
+      display: grid;
+      grid-template-columns: 92px 1fr 54px;
+      gap: 12px;
+      align-items: center;
+      padding: 14px;
+      border-radius: 18px;
+      background: rgba(7,20,47,0.52);
+      border: 1px solid rgba(255,255,255,0.09);
+      color: var(--muted);
+      font-size: 0.92rem;
+    }
+
+    .planner-row span:first-child {
+      color: var(--gold-light);
+      font-weight: 800;
+      text-transform: uppercase;
+      font-size: 0.75rem;
+      letter-spacing: 0.08em;
+    }
+
+    .planner-row strong {
+      color: var(--text);
+    }
+
+    .planner-tag {
+      justify-self: end;
+      padding: 4px 8px;
+      border-radius: 999px;
+      background: rgba(215,168,79,0.12);
+      border: 1px solid rgba(215,168,79,0.24);
+      color: var(--gold-light);
+      font-size: 0.72rem;
+      font-weight: 800;
+    }
+
+    .submission-card {
+      margin-top: 22px;
+      background: rgba(215,168,79,0.08);
+      border: 1px solid rgba(215,168,79,0.25);
+      border-radius: 24px;
+      padding: 24px;
+    }
+
+    .submission-card h3 {
+      color: var(--gold-light);
+      margin-bottom: 10px;
+      font-size: 1.35rem;
+    }
+
+    .submission-card p {
+      color: var(--muted);
+      margin-bottom: 16px;
+    }
+
+    .submission-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 14px;
+      margin: 18px 0 22px;
+    }
+
+    .submission-step {
+      padding: 16px;
+      border-radius: 18px;
+      background: rgba(255,255,255,0.045);
+      border: 1px solid rgba(255,255,255,0.09);
+      color: var(--muted);
+    }
+
+    .submission-step strong {
+      display: block;
+      color: var(--text);
+      margin-bottom: 6px;
+    }
+
     /* Privacy policy full layout */
     .privacy-full {
       background: var(--card);
@@ -455,7 +604,9 @@
         grid-template-columns: 1fr;
       }
 
-      .feature-grid {
+      .feature-grid,
+      .planner-showcase,
+      .submission-grid {
         grid-template-columns: 1fr;
       }
 
@@ -479,6 +630,7 @@
       </a>
       <nav class="nav-links" aria-label="Main navigation">
         <a href="#features">Features</a>
+        <a href="#coaching-planner">Coaching Planner</a>
         <a href="#store">Microsoft Store</a>
         <a href="#privacy">Privacy</a>
         <a href="#contact">Contact</a>
@@ -493,7 +645,7 @@
           <div class="eyebrow">Official platform of Understanding Rallies</div>
           <h1><span>Understanding Rallies</span><br>performance analysis for modern squash.</h1>
           <p>
-            UR Squash is the flagship analysis brand developed by Understanding Rallies, helping players and coaches log rallies, analyse shot patterns, and transform match footage into actionable performance insight.
+            Understanding Rallies builds squash software for both analysis and coaching: helping players and coaches log rallies, analyse shot patterns, plan training sessions, and turn coaching ideas into repeatable development work.
           </p>
           <div style="margin-bottom: 28px;">
             <img src="logo.png" alt="UR Squash logo" style="width: 240px; max-width: 100%; filter: drop-shadow(0 12px 26px rgba(0,0,0,0.28));" />
@@ -501,12 +653,12 @@
 
           <div class="hero-actions">
             <a class="button" href="#contact">Contact Understanding Rallies</a>
-            <a class="button secondary" href="#features">Explore features</a>
+            <a class="button secondary" href="#coaching-planner">View Coaching Planner</a>
           </div>
           <div class="trust-row" aria-label="Product highlights">
             <span><strong>Built for:</strong> squash players &amp; coaches</span>
             <span><strong>Focus:</strong> rally understanding</span>
-            <span><strong>Status:</strong> Now on the Microsoft Store</span>
+            <span><strong>Status:</strong> Apps live on the Microsoft Store</span>
           </div>
         </div>
 
@@ -545,7 +697,7 @@
         <div class="section-head">
           <h2>Software developed by Understanding Rallies.</h2>
           <p>
-            Understanding Rallies focuses on building software tools that capture the details that matter in squash: rally flow, shot location, winners, errors, and repeatable coaching feedback.
+            Understanding Rallies focuses on building software tools that capture the details that matter in squash: rally flow, shot location, winners, errors, planned training sessions, and repeatable coaching feedback.
           </p>
         </div>
         <div class="feature-grid">
@@ -562,8 +714,64 @@
           <article class="feature-card">
             <div class="icon">03</div>
             <h3>Coach-friendly outputs</h3>
-            <p>Produce analysis that can support feedback sessions, player development, and more intentional practice planning.</p>
+            <p>Produce analysis and coaching plans that can support feedback sessions, player development, and more intentional practice design.</p>
           </article>
+        </div>
+      </div>
+    </section>
+
+
+
+    <section id="coaching-planner">
+      <div class="container">
+        <div class="section-head">
+          <h2>UR Coaching Planner — plan, review, and grow your drill library.</h2>
+          <p>
+            UR Coaching Planner is built for squash coaches who want one place to organise session plans, store drill notes, review sessions, manage squads, and keep their coaching philosophy visible throughout the season.
+          </p>
+        </div>
+
+        <div class="planner-showcase">
+          <div class="planner-panel">
+            <h3>Designed around the coaching workflow</h3>
+            <p>
+              Build a session from warm-up to match play, attach drills to each block, review what happened afterwards, and keep player or squad notes connected to your planning process.
+            </p>
+            <ul class="planner-list">
+              <li><strong>Plan:</strong> create structured sessions using a drill library and session builder.</li>
+              <li><strong>Calendar:</strong> view planned sessions by date and reopen them when needed.</li>
+              <li><strong>Review:</strong> write post-session reflections, player notes, and improvement points.</li>
+              <li><strong>Squads:</strong> organise groups, profiles, levels, and session history.</li>
+              <li><strong>Philosophy:</strong> store your coaching values, approach, and player-development goals.</li>
+            </ul>
+          </div>
+
+          <div class="planner-panel">
+            <h3>Example session structure</h3>
+            <p>
+              The app helps keep each session easy to follow, easy to adapt, and easy to export for future reference or sharing.
+            </p>
+            <div class="planner-mock" aria-label="UR Coaching Planner example session layout">
+              <div class="planner-row"><span>Warm up</span><strong>Movement patterns + activation</strong><em class="planner-tag">10 min</em></div>
+              <div class="planner-row"><span>Drill</span><strong>Back-court pressure into volley option</strong><em class="planner-tag">20 min</em></div>
+              <div class="planner-row"><span>Drill</span><strong>Front-court decision making</strong><em class="planner-tag">15 min</em></div>
+              <div class="planner-row"><span>Match</span><strong>Conditioned games with target outcomes</strong><em class="planner-tag">20 min</em></div>
+              <div class="planner-row"><span>Review</span><strong>Player notes, rating, and next focus</strong><em class="planner-tag">Saved</em></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="submission-card" id="submit-drill">
+          <h3>Want your drills included in the app?</h3>
+          <p>
+            Coaches can send their existing drill library file to Understanding Rallies for review. Selected drills may be added to the shared drill library in future app updates, helping other coaches discover new ways to structure sessions.
+          </p>
+          <div class="submission-grid">
+            <div class="submission-step"><strong>1. Open your Documents folder</strong>Go to <em>Documents &gt; Understanding Rallies &gt; coaching</em> on the device where you use UR Coaching Planner.</div>
+            <div class="submission-step"><strong>2. Find your drill library file</strong>Look for the drill library file created by the app. This contains the custom drills you have added locally.</div>
+            <div class="submission-step"><strong>3. Email the file</strong>Attach that drill library file to an email and send it to Understanding Rallies for review.</div>
+          </div>
+          <a class="button" href="mailto:pacifico@understandingrallies.com?subject=UR%20Coaching%20Planner%20Drill%20Library%20Submission&body=Please%20attach%20your%20drill%20library%20file%20from%3A%0A%0ADocuments%20%3E%20Understanding%20Rallies%20%3E%20coaching%0A%0AThank%20you%20for%20sharing%20your%20drills%20with%20Understanding%20Rallies.">Email your drill library file</a>
         </div>
       </div>
     </section>
@@ -571,9 +779,9 @@
     <section id="store">
       <div class="container split">
         <div class="section-head">
-          <h2>UR Logger — now available on the Microsoft Store.</h2>
+          <h2>Understanding Rallies apps — available on the Microsoft Store.</h2>
           <p>
-            UR Logger is the first app in the URSquash suite by Understanding Rallies. Log matches live or from video footage and generate instant shot and rally analysis — all stored locally on your device.
+            UR Logger supports match logging and analysis, while UR Coaching Planner supports session planning, drill notes, reviews, squads, and coaching goals. Both are part of the wider Understanding Rallies software suite for squash coaches and players.
           </p>
         </div>
         <div class="privacy-box">
@@ -583,7 +791,8 @@
             <li>Log matches live courtside or from video footage.</li>
             <li>Automatic shot profile and winning rally breakdown generated after every session.</li>
             <li>All data stored locally — no account required.</li>
-            <li>Available now on the Microsoft Store for Windows.</li>
+            <li>Available on the Microsoft Store for Windows.</li>
+            <li>UR Coaching Planner helps coaches build sessions, manage squads, review training, and develop a reusable drill library.</li>
           </ul>
         </div>
       </div>
@@ -594,7 +803,7 @@
         <div class="section-head">
           <h2>Privacy policy.</h2>
           <p>
-            Understanding Rallies is committed to protecting your privacy. This policy applies to all apps published by Understanding Rallies, including UR Logger.
+            Understanding Rallies is committed to protecting your privacy. This policy applies to all apps published by Understanding Rallies, including UR Logger and UR Coaching Planner.
           </p>
         </div>
         <div class="privacy-full">
@@ -602,18 +811,19 @@
 
           <h3>Overview</h3>
           <p>
-            UR Logger does not collect, transmit, or store any personal information. All match data recorded by the app is saved locally on your device in your Documents folder and never leaves your device.
+            Understanding Rallies apps do not collect, transmit, or store personal information. Match data, coaching sessions, reviews, squad notes, and drill information are saved locally on your device and never leave your device.
           </p>
 
           <hr class="privacy-divider" />
 
           <h3>Data collected</h3>
-          <p>UR Logger does not collect any personal data. The app creates and stores the following files locally on your device only:</p>
+          <p>Understanding Rallies apps do not collect any personal data. The apps create and store the following files locally on your device only:</p>
           <ul>
             <li>Match event logs (JSON and CSV files) saved to your Documents folder</li>
             <li>Analysis output images generated from your session data</li>
             <li>A keymap preferences file storing your custom keyboard shortcuts</li>
             <li>A first-launch flag file used to show the tutorial on first use</li>
+            <li>Coaching Planner session plans, reviews, squad profiles, coaching philosophy notes, goals, and custom drill entries</li>
           </ul>
           <p>None of these files are uploaded to Understanding Rallies or any third party.</p>
 
@@ -647,7 +857,7 @@
 
           <h3>Future versions</h3>
           <p>
-            Future versions of UR Logger and other Understanding Rallies apps may introduce optional account features for subscription management. If personal data is collected at that point, this policy will be updated before release and users will be informed clearly.
+            Future versions of UR Logger, UR Coaching Planner, and other Understanding Rallies apps may introduce optional account features for subscription management. If personal data is collected at that point, this policy will be updated before release and users will be informed clearly.
           </p>
 
           <hr class="privacy-divider" />
@@ -666,7 +876,7 @@
         <div class="section-head">
           <h2>Contact Understanding Rallies.</h2>
           <p>
-            For support, partnership enquiries, or questions about UR Logger and future products, contact Understanding Rallies using the business email below.
+            For support, partnership enquiries, drill submissions, or questions about UR Logger, UR Coaching Planner, and future products, contact Understanding Rallies using the business email below.
           </p>
         </div>
         <div class="contact-card">
@@ -693,7 +903,7 @@
   <footer>
     <div class="container footer-row">
       <span>© <span id="year"></span> Understanding Rallies. All rights reserved.</span>
-      <span>Developer of UR Logger and the URSquash suite of performance analysis software.</span>
+      <span>Developer of UR Logger, UR Coaching Planner, and the URSquash suite of squash software.</span>
     </div>
   </footer>
 
