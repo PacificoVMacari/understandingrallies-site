@@ -232,9 +232,10 @@
   const { createClient } = supabase;
   const client = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
-  // Read the callback URL passed by the desktop app
+  // Read the callback URL passed by the desktop app, or a web redirect
   const params = new URLSearchParams(window.location.search);
   const callbackUrl = params.get("callback");
+  const redirectUrl = params.get("redirect");
 
   function showTab(tab) {
     document.getElementById("form-login").style.display = tab === "login" ? "block" : "none";
@@ -257,7 +258,11 @@
 
   function redirectToApp(session) {
     if (callbackUrl) {
+      // Redirect back to desktop app
       window.location.href = callbackUrl + "?access_token=" + session.access_token;
+    } else if (redirectUrl) {
+      // Redirect back to a website page (e.g. pricing)
+      window.location.href = redirectUrl;
     } else {
       showMsg("Logged in successfully! You can close this tab.", "success");
     }
