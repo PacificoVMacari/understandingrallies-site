@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Login | Understanding Rallies</title>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <style>
+    :root {
+      --blue-950: #07142f;
+      --blue-900: #0b1f46;
+      --gold: #d7a84f;
+      --gold-light: #f0cf82;
+      --text: #f7f2e8;
+      --muted: #c8d0df;
+      --card-border: rgba(240, 207, 130, 0.18);
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: Arial, Helvetica, sans-serif;
+      background:
+        radial-gradient(circle at top left, rgba(215, 168, 79, 0.18), transparent 35%),
+        radial-gradient(circle at top right, rgba(27, 73, 156, 0.4), transparent 38%),
+        linear-gradient(135deg, var(--blue-950), var(--blue-900) 52%, #061026);
+      color: var(--text);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+    }
+
+    .card {
+      background: rgba(255, 255, 255, 0.055);
+      border: 1px solid var(--card-border);
+      border-radius: 28px;
+      padding: 40px 36px;
+      width: 100%;
+      max-width: 420px;
+      box-shadow: 0 28px 80px rgba(0, 0, 0, 0.3);
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 28px;
+      font-weight: 800;
+      letter-spacing: 0.04em;
+      font-size: 0.95rem;
+    }
+
+    .logo img {
+      width: 44px;
+      height: 44px;
+      object-fit: contain;
+      border-radius: 10px;
+      background: rgba(255,255,255,0.04);
+      padding: 3px;
+    }
+
+    h1 {
+      font-size: 1.6rem;
+      letter-spacing: -0.03em;
+      margin-bottom: 6px;
+    }
+
+    h1 span { color: var(--gold-light); }
+
+    .subtitle {
+      color: var(--muted);
+      font-size: 0.95rem;
+      margin-bottom: 28px;
+    }
+
+    .tab-row {
+      display: flex;
+      gap: 0;
+      margin-bottom: 24px;
+      border-radius: 12px;
+      overflow: hidden;
+      border: 1px solid rgba(255,255,255,0.1);
+    }
+
+    .tab {
+      flex: 1;
+      padding: 10px;
+      background: rgba(255,255,255,0.04);
+      border: none;
+      color: var(--muted);
+      font-size: 0.95rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.2s, color 0.2s;
+    }
+
+    .tab.active {
+      background: rgba(240, 207, 130, 0.15);
+      color: var(--gold-light);
+    }
+
+    label {
+      display: block;
+      font-size: 0.88rem;
+      color: var(--muted);
+      margin-bottom: 6px;
+      font-weight: 600;
+    }
+
+    input {
+      width: 100%;
+      padding: 12px 14px;
+      border-radius: 12px;
+      border: 1px solid rgba(255,255,255,0.12);
+      background: rgba(255,255,255,0.06);
+      color: var(--text);
+      font-size: 1rem;
+      margin-bottom: 16px;
+      outline: none;
+      transition: border-color 0.2s;
+    }
+
+    input:focus {
+      border-color: rgba(240, 207, 130, 0.5);
+    }
+
+    button.primary {
+      width: 100%;
+      padding: 14px;
+      border-radius: 999px;
+      background: linear-gradient(135deg, var(--gold-light), var(--gold));
+      color: #07142f;
+      font-weight: 800;
+      font-size: 1rem;
+      border: none;
+      cursor: pointer;
+      box-shadow: 0 12px 30px rgba(215, 168, 79, 0.2);
+      transition: opacity 0.2s;
+    }
+
+    button.primary:hover { opacity: 0.9; }
+    button.primary:disabled { opacity: 0.5; cursor: not-allowed; }
+
+    .message {
+      margin-top: 16px;
+      padding: 12px 14px;
+      border-radius: 12px;
+      font-size: 0.92rem;
+      display: none;
+    }
+
+    .message.error {
+      background: rgba(255, 80, 80, 0.12);
+      border: 1px solid rgba(255, 80, 80, 0.3);
+      color: #ff9494;
+    }
+
+    .message.success {
+      background: rgba(80, 200, 120, 0.12);
+      border: 1px solid rgba(80, 200, 120, 0.3);
+      color: #7ee8a2;
+    }
+
+    .app-notice {
+      margin-top: 20px;
+      padding: 12px 14px;
+      border-radius: 12px;
+      background: rgba(240, 207, 130, 0.08);
+      border: 1px solid rgba(240, 207, 130, 0.2);
+      color: var(--muted);
+      font-size: 0.88rem;
+      text-align: center;
+    }
+
+    .app-notice strong { color: var(--gold-light); }
+  </style>
+</head>
+<body>
+
+<div class="card">
+  <div class="logo">
+    <img src="logo.png" alt="Understanding Rallies logo" />
+    <span>UNDERSTANDING RALLIES</span>
+  </div>
+
+  <h1><span>Sign in</span> to your account</h1>
+  <p class="subtitle">Access your URSquash Pro subscription and features.</p>
+
+  <div class="tab-row">
+    <button class="tab active" id="tab-login" onclick="showTab('login')">Login</button>
+    <button class="tab" id="tab-signup" onclick="showTab('signup')">Sign Up</button>
+  </div>
+
+  <!-- LOGIN FORM -->
+  <div id="form-login">
+    <label for="login-email">Email address</label>
+    <input type="email" id="login-email" placeholder="you@example.com" />
+
+    <label for="login-password">Password</label>
+    <input type="password" id="login-password" placeholder="••••••••" />
+
+    <button class="primary" id="login-btn" onclick="handleLogin()">Sign In</button>
+  </div>
+
+  <!-- SIGNUP FORM -->
+  <div id="form-signup" style="display:none;">
+    <label for="signup-email">Email address</label>
+    <input type="email" id="signup-email" placeholder="you@example.com" />
+
+    <label for="signup-password">Password</label>
+    <input type="password" id="signup-password" placeholder="Create a password" />
+
+    <button class="primary" id="signup-btn" onclick="handleSignup()">Create Account</button>
+  </div>
+
+  <div class="message" id="msg"></div>
+
+  <div class="app-notice">
+    <strong>Logging in from the URSquash app?</strong><br>
+    After signing in you will be redirected back to the app automatically.
+  </div>
+</div>
+
+<script>
+  // ─── SUPABASE CONFIG ───────────────────────────────────────────────
+  const SUPABASE_URL = "https://zivwjctjjficoduevomb.supabase.co";
+  const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InppdndqY3RqamZpY29kdWV2b21iIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODEwOTYxODYsImV4cCI6MjA5NjY3MjE4Nn0.w8wZy18X6k4P6sKZwHp6eA3fntv-Ia64eTCcyUwgF5U";
+
+  const { createClient } = supabase;
+  const client = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+  // Read the callback URL passed by the desktop app
+  const params = new URLSearchParams(window.location.search);
+  const callbackUrl = params.get("callback");
+
+  function showTab(tab) {
+    document.getElementById("form-login").style.display = tab === "login" ? "block" : "none";
+    document.getElementById("form-signup").style.display = tab === "signup" ? "block" : "none";
+    document.getElementById("tab-login").classList.toggle("active", tab === "login");
+    document.getElementById("tab-signup").classList.toggle("active", tab === "signup");
+    hideMsg();
+  }
+
+  function showMsg(text, type) {
+    const el = document.getElementById("msg");
+    el.textContent = text;
+    el.className = "message " + type;
+    el.style.display = "block";
+  }
+
+  function hideMsg() {
+    document.getElementById("msg").style.display = "none";
+  }
+
+  function redirectToApp(session) {
+    if (callbackUrl) {
+      window.location.href = callbackUrl + "?access_token=" + session.access_token;
+    } else {
+      showMsg("Logged in successfully! You can close this tab.", "success");
+    }
+  }
+
+  async function handleLogin() {
+    const email = document.getElementById("login-email").value.trim();
+    const password = document.getElementById("login-password").value;
+    const btn = document.getElementById("login-btn");
+
+    if (!email || !password) { showMsg("Please enter your email and password.", "error"); return; }
+
+    btn.disabled = true;
+    btn.textContent = "Signing in...";
+    hideMsg();
+
+    const { data, error } = await client.auth.signInWithPassword({ email, password });
+
+    if (error) {
+      showMsg(error.message, "error");
+      btn.disabled = false;
+      btn.textContent = "Sign In";
+    } else {
+      showMsg("Login successful! Returning to app...", "success");
+      setTimeout(() => redirectToApp(data.session), 800);
+    }
+  }
+
+  async function handleSignup() {
+    const email = document.getElementById("signup-email").value.trim();
+    const password = document.getElementById("signup-password").value;
+    const btn = document.getElementById("signup-btn");
+
+    if (!email || !password) { showMsg("Please enter your email and password.", "error"); return; }
+    if (password.length < 6) { showMsg("Password must be at least 6 characters.", "error"); return; }
+
+    btn.disabled = true;
+    btn.textContent = "Creating account...";
+    hideMsg();
+
+    const { data, error } = await client.auth.signUp({ email, password });
+
+    if (error) {
+      showMsg(error.message, "error");
+      btn.disabled = false;
+      btn.textContent = "Create Account";
+    } else if (data.session) {
+      showMsg("Account created! Returning to app...", "success");
+      setTimeout(() => redirectToApp(data.session), 800);
+    } else {
+      showMsg("Account created! Check your email to confirm, then log in.", "success");
+      btn.disabled = false;
+      btn.textContent = "Create Account";
+    }
+  }
+</script>
+</body>
+</html>
