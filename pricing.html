@@ -462,12 +462,16 @@
     btn.disabled = true;
     btn.textContent = "Loading...";
 
-    // Check if user is logged in
+    // Check if user is logged in on the website
     const { data: { session } } = await client.auth.getSession();
 
     if (!session) {
-      // Not logged in — send them to login page, return to pricing after
-      window.location.href = "app-login.html?redirect=pricing.html";
+      showStatus("Please log in first to upgrade.", "error");
+      setTimeout(() => {
+        window.location.href = "app-login.html?redirect=pricing.html";
+      }, 1500);
+      btn.disabled = false;
+      btn.textContent = "Upgrade to Pro";
       return;
     }
 
@@ -481,13 +485,16 @@
         }
       });
 
-      if (!resp.ok) throw new Error("Failed to create checkout session");
+      if (!resp.ok) {
+        const errText = await resp.text();
+        throw new Error(`Server error ${resp.status}: ${errText}`);
+      }
 
       const data = await resp.json();
       window.location.href = data.url;
 
     } catch (err) {
-      showStatus("Something went wrong. Please try again.", "error");
+      showStatus(`Error: ${err.message}`, "error");
       btn.disabled = false;
       btn.textContent = "Upgrade to Pro";
     }
