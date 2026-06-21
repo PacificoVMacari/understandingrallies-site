@@ -462,7 +462,8 @@
     btn.disabled = true;
     btn.textContent = "Loading...";
 
-    // Check if user is logged in on the website
+    // Wait for Supabase to restore session from localStorage
+    await client.auth.initialize();
     const { data: { session } } = await client.auth.getSession();
 
     if (!session) {
