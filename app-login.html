@@ -264,7 +264,11 @@
       // Redirect back to a website page (e.g. pricing)
       window.location.href = redirectUrl;
     } else {
-      showMsg("Logged in successfully! You can close this tab.", "success");
+      // No specific redirect — send to pricing page by default
+      showMsg("Login successful! Redirecting...", "success");
+      setTimeout(() => {
+        window.location.href = "pricing.html";
+      }, 800);
     }
   }
 
