@@ -237,6 +237,32 @@
   const callbackUrl = params.get("callback");
   const redirectUrl = params.get("redirect");
 
+  // ─── SECURITY: only ever hand the login token to trusted destinations ──────
+  // Without these checks, a crafted ?callback= link could send a user's login
+  // token to an attacker's site (an "open redirect" / token-theft attack).
+
+  // The desktop app listens on a local loopback port, e.g.
+  // http://localhost:1234/callback — allow ONLY that, nothing else.
+  function safeCallback(raw) {
+    if (!raw) return null;
+    try {
+      const u = new URL(raw);
+      const loopback = u.hostname === "localhost" || u.hostname === "127.0.0.1";
+      if (u.protocol === "http:" && loopback) return u;
+    } catch (e) { /* not a valid URL */ }
+    return null;
+  }
+
+  // Website redirects (e.g. back to pricing) must stay on this same site.
+  function safeRedirect(raw) {
+    if (!raw) return null;
+    try {
+      const u = new URL(raw, window.location.origin);
+      if (u.origin === window.location.origin) return u.href;
+    } catch (e) { /* not a valid URL */ }
+    return null;
+  }
+
   function showTab(tab) {
     document.getElementById("form-login").style.display = tab === "login" ? "block" : "none";
     document.getElementById("form-signup").style.display = tab === "signup" ? "block" : "none";
@@ -256,31 +282,32 @@
     document.getElementById("msg").style.display = "none";
   }
 
-  // Allow Enter key to submit the active form
-  document.addEventListener("keydown", (e) => {
-    if (e.key !== "Enter") return;
-    const loginVisible = document.getElementById("form-login").style.display !== "none";
-    if (loginVisible) {
-      handleLogin();
-    } else {
-      handleSignup();
-    }
-  });
-
   function redirectToApp(session) {
+    // Desktop app login: hand the token back ONLY to a validated local address.
     if (callbackUrl) {
-      // Redirect back to desktop app
-      window.location.href = callbackUrl + "?access_token=" + session.access_token;
-    } else if (redirectUrl) {
-      // Redirect back to a website page (e.g. pricing)
-      window.location.href = redirectUrl;
-    } else {
-      // No specific redirect — send to pricing page by default
-      showMsg("Login successful! Redirecting...", "success");
-      setTimeout(() => {
-        window.location.href = "pricing.html";
-      }, 800);
+      const cb = safeCallback(callbackUrl);
+      if (!cb) {
+        showMsg("This login link has an untrusted return address, so it was " +
+                "blocked for your security. Please start login from the UR Logger app.",
+                "error");
+        return;
+      }
+      cb.searchParams.set("access_token", session.access_token);
+      window.location.href = cb.href;
+      return;
     }
+    // Website login: only redirect to a page on this same site.
+    if (redirectUrl) {
+      const rd = safeRedirect(redirectUrl);
+      if (!rd) {
+        showMsg("This login link has an untrusted return address, so it was " +
+                "blocked for your security.", "error");
+        return;
+      }
+      window.location.href = rd;
+      return;
+    }
+    showMsg("Logged in successfully! You can close this tab.", "success");
   }
 
   async function handleLogin() {
