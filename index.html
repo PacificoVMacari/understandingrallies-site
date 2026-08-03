@@ -4,6 +4,9 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="description" content="Understanding Rallies develops squash software for performance analysis and coaching, including UR Logger and UR Coaching Planner — tools for logging rallies, planning sessions, reviewing players, and building a shared drill library." />
   <title>Understanding Rallies | Squash Analytics & Coaching Software</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;1,9..144,500&family=Public+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <style>
     :root {
       --blue-950: #07142f;
@@ -16,6 +19,8 @@
       --card: rgba(255, 255, 255, 0.055);
       --card-border: rgba(240, 207, 130, 0.18);
       --shadow: rgba(0, 0, 0, 0.25);
+      --font-display: 'Fraunces', Georgia, serif;
+      --font-body: 'Public Sans', Arial, Helvetica, sans-serif;
     }
 
     * {
@@ -24,8 +29,10 @@
       padding: 0;
     }
 
+    html { scroll-behavior: smooth; }
+
     body {
-      font-family: Arial, Helvetica, sans-serif;
+      font-family: var(--font-body);
       background:
         radial-gradient(circle at top left, rgba(215, 168, 79, 0.18), transparent 35%),
         radial-gradient(circle at top right, rgba(27, 73, 156, 0.4), transparent 38%),
@@ -49,9 +56,15 @@
       position: sticky;
       top: 0;
       z-index: 20;
-      background: rgba(7, 20, 47, 0.86);
+      background: rgba(7, 20, 47, 0.72);
       backdrop-filter: blur(14px);
       border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+      transition: background 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    header.scrolled {
+      background: rgba(7, 20, 47, 0.92);
+      box-shadow: 0 12px 30px rgba(0, 0, 0, 0.25);
     }
 
     .nav {
@@ -66,8 +79,10 @@
       display: flex;
       align-items: center;
       gap: 12px;
-      font-weight: 800;
+      font-weight: 700;
       letter-spacing: 0.04em;
+      font-family: var(--font-display);
+      font-size: 1.02rem;
     }
 
     .nav-logo {
@@ -82,14 +97,37 @@
 
     .nav-links {
       display: flex;
-      gap: 24px;
+      gap: 26px;
       align-items: center;
       color: var(--muted);
       font-size: 0.95rem;
     }
 
-    .nav-links a:hover {
+    .nav-links a:not(.button) {
+      position: relative;
+      padding-bottom: 3px;
+    }
+
+    .nav-links a:not(.button)::after {
+      content: "";
+      position: absolute;
+      left: 0;
+      bottom: -3px;
+      width: 100%;
+      height: 1px;
+      background: var(--gold-light);
+      transform: scaleX(0);
+      transform-origin: right;
+      transition: transform 0.3s ease;
+    }
+
+    .nav-links a:not(.button):hover {
       color: var(--gold-light);
+    }
+
+    .nav-links a:not(.button):hover::after {
+      transform: scaleX(1);
+      transform-origin: left;
     }
 
     .button {
@@ -104,17 +142,61 @@
       font-weight: 800;
       box-shadow: 0 12px 30px rgba(215, 168, 79, 0.2);
       border: none;
+      transition: transform 0.25s ease, box-shadow 0.25s ease;
     }
 
-    .button.secondary {
-      background: rgba(255, 255, 255, 0.06);
+    .button:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 16px 36px rgba(215, 168, 79, 0.32);
+    }
+
+    .link-cta {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-weight: 700;
       color: var(--text);
-      border: 1px solid rgba(255, 255, 255, 0.14);
-      box-shadow: none;
+      padding-bottom: 3px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.28);
+      transition: gap 0.25s ease, border-color 0.25s ease, color 0.25s ease;
+      min-height: 46px;
+    }
+
+    .link-cta svg {
+      width: 16px;
+      height: 16px;
+      transition: transform 0.25s ease;
+    }
+
+    .link-cta:hover {
+      gap: 13px;
+      color: var(--gold-light);
+      border-color: var(--gold-light);
+    }
+
+    .link-cta:hover svg {
+      transform: translateX(4px);
     }
 
     .hero {
+      position: relative;
       padding: 94px 0 78px;
+      overflow: hidden;
+    }
+
+    .hero::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(460px circle at var(--mx, 65%) var(--my, 10%), rgba(215, 168, 79, 0.16), transparent 60%);
+      transition: background 0.25s ease;
+      z-index: 0;
+      pointer-events: none;
+    }
+
+    .hero > .container {
+      position: relative;
+      z-index: 1;
     }
 
     .hero-grid {
@@ -139,14 +221,18 @@
     }
 
     h1 {
+      font-family: var(--font-display);
+      font-weight: 600;
       font-size: clamp(2.55rem, 6vw, 5.15rem);
       line-height: 0.98;
-      letter-spacing: -0.06em;
+      letter-spacing: -0.03em;
       margin-bottom: 24px;
     }
 
     h1 span {
       color: var(--gold-light);
+      font-style: italic;
+      font-weight: 500;
     }
 
     .hero p {
@@ -158,7 +244,8 @@
 
     .hero-actions {
       display: flex;
-      gap: 14px;
+      align-items: center;
+      gap: 26px;
       flex-wrap: wrap;
       margin-bottom: 34px;
     }
@@ -183,6 +270,9 @@
       box-shadow: 0 28px 80px rgba(0, 0, 0, 0.3);
       position: relative;
       overflow: hidden;
+      transform: perspective(1000px) rotateX(0deg) rotateY(0deg);
+      transition: transform 0.15s ease-out;
+      will-change: transform;
     }
 
     .app-card::before {
@@ -207,11 +297,14 @@
     .window-top {
       display: flex;
       align-items: center;
+      justify-content: space-between;
       gap: 7px;
       padding: 14px 16px;
       background: rgba(255,255,255,0.05);
       border-bottom: 1px solid rgba(255,255,255,0.08);
     }
+
+    .window-dots { display: flex; gap: 7px; }
 
     .dot {
       width: 10px;
@@ -220,60 +313,57 @@
       background: rgba(255,255,255,0.35);
     }
 
-    .court {
-      height: 390px;
-      padding: 26px;
+    .window-hint {
+      font-size: 0.72rem;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: rgba(240, 207, 130, 0.65);
+      font-weight: 700;
+    }
+
+    .mock-window img {
+      display: block;
+      width: 100%;
+      height: auto;
+    }
+
+    .gallery-grid {
       display: grid;
-      grid-template-columns: 1fr 1fr;
+      grid-template-columns: repeat(2, 1fr);
       gap: 18px;
     }
 
-    .court-panel {
-      border-radius: 18px;
-      border: 1px solid rgba(240, 207, 130, 0.24);
-      background: rgba(255,255,255,0.035);
-      padding: 18px;
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
+    .gallery-item {
+      position: relative;
+      display: block;
+      border-radius: 20px;
+      overflow: hidden;
+      border: 1px solid var(--card-border);
+      box-shadow: 0 18px 44px rgba(0,0,0,0.16);
+      background: #081832;
     }
 
-    .court-title {
-      color: var(--gold-light);
-      font-weight: 800;
-      font-size: 0.86rem;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
+    .gallery-item img {
+      display: block;
+      width: 100%;
+      height: auto;
+      transition: transform 0.5s ease;
     }
 
-    .grid-court {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      grid-template-rows: repeat(3, 1fr);
-      gap: 7px;
-      flex: 1;
-      margin: 18px 0;
+    .gallery-item:hover img {
+      transform: scale(1.045);
     }
 
-    .cell {
-      border-radius: 10px;
-      border: 1px solid rgba(255,255,255,0.12);
-      background: rgba(255,255,255,0.04);
-    }
-
-    .cell.active {
-      background: rgba(215,168,79,0.6);
-      box-shadow: 0 0 22px rgba(215,168,79,0.25);
-    }
-
-    .metric {
-      display: flex;
-      justify-content: space-between;
-      gap: 12px;
-      color: var(--muted);
-      font-size: 0.9rem;
-      padding-top: 12px;
-      border-top: 1px solid rgba(255,255,255,0.08);
+    .gallery-caption {
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      padding: 16px 18px;
+      background: linear-gradient(0deg, rgba(7,20,47,0.94), rgba(7,20,47,0));
+      color: var(--text);
+      font-size: 0.92rem;
+      font-weight: 600;
     }
 
     section {
@@ -286,9 +376,11 @@
     }
 
     h2 {
+      font-family: var(--font-display);
+      font-weight: 600;
       font-size: clamp(2rem, 4vw, 3.2rem);
       line-height: 1.05;
-      letter-spacing: -0.04em;
+      letter-spacing: -0.02em;
       margin-bottom: 16px;
     }
 
@@ -300,7 +392,8 @@
 
     .feature-grid {
       display: grid;
-      grid-template-columns: repeat(3, 1fr);
+      grid-template-columns: 1.15fr 1fr;
+      grid-template-rows: auto auto;
       gap: 18px;
     }
 
@@ -310,14 +403,25 @@
       background: var(--card);
       border: 1px solid var(--card-border);
       border-radius: 24px;
-      padding: 24px;
+      padding: 26px;
       box-shadow: 0 18px 44px rgba(0,0,0,0.16);
     }
 
+    .feature-card {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .feature-card.featured {
+      grid-row: 1 / 3;
+      justify-content: space-between;
+    }
+
     .feature-card h3 {
-      margin: 14px 0 8px;
+      margin: 16px 0 8px;
       color: var(--text);
       font-size: 1.2rem;
+      font-weight: 700;
     }
 
     .feature-card p {
@@ -326,15 +430,42 @@
     }
 
     .icon {
-      width: 44px;
-      height: 44px;
+      width: 46px;
+      height: 46px;
       display: grid;
       place-items: center;
       border-radius: 14px;
       background: rgba(215,168,79,0.13);
       border: 1px solid rgba(215,168,79,0.24);
       color: var(--gold-light);
-      font-weight: 900;
+    }
+
+    .equalizer {
+      margin-top: 22px;
+      display: flex;
+      align-items: flex-end;
+      gap: 6px;
+      height: 64px;
+    }
+
+    .equalizer span {
+      flex: 1;
+      border-radius: 6px 6px 0 0;
+      background: linear-gradient(180deg, var(--gold-light), rgba(215,168,79,0.25));
+      animation: eq 2.6s ease-in-out infinite;
+    }
+
+    .equalizer span:nth-child(1) { height: 35%; animation-delay: 0s; }
+    .equalizer span:nth-child(2) { height: 70%; animation-delay: 0.2s; }
+    .equalizer span:nth-child(3) { height: 45%; animation-delay: 0.4s; }
+    .equalizer span:nth-child(4) { height: 85%; animation-delay: 0.6s; }
+    .equalizer span:nth-child(5) { height: 55%; animation-delay: 0.8s; }
+    .equalizer span:nth-child(6) { height: 65%; animation-delay: 1s; }
+    .equalizer span:nth-child(7) { height: 30%; animation-delay: 1.2s; }
+
+    @keyframes eq {
+      0%, 100% { transform: scaleY(1); }
+      50% { transform: scaleY(0.45); }
     }
 
     .split {
@@ -371,6 +502,12 @@
       background: rgba(255,255,255,0.045);
       border: 1px solid rgba(255,255,255,0.09);
       color: var(--muted);
+      transition: border-color 0.25s ease, background 0.25s ease;
+    }
+
+    .contact-item:hover {
+      border-color: rgba(240, 207, 130, 0.3);
+      background: rgba(255,255,255,0.065);
     }
 
     .contact-item strong {
@@ -378,8 +515,6 @@
       color: var(--text);
       margin-bottom: 4px;
     }
-
-
 
     .planner-showcase {
       display: grid;
@@ -411,8 +546,10 @@
     }
 
     .planner-panel h3 {
+      font-family: var(--font-display);
+      font-weight: 600;
       color: var(--gold-light);
-      font-size: 1.35rem;
+      font-size: 1.4rem;
       margin-bottom: 10px;
       position: relative;
       z-index: 1;
@@ -439,6 +576,12 @@
       background: rgba(255,255,255,0.045);
       border: 1px solid rgba(255,255,255,0.09);
       color: var(--muted);
+      transition: border-color 0.25s ease, transform 0.25s ease;
+    }
+
+    .planner-list li:hover {
+      border-color: rgba(240, 207, 130, 0.32);
+      transform: translateX(4px);
     }
 
     .planner-list strong {
@@ -463,6 +606,12 @@
       border: 1px solid rgba(255,255,255,0.09);
       color: var(--muted);
       font-size: 0.92rem;
+      transition: border-color 0.25s ease, background 0.25s ease;
+    }
+
+    .planner-row:hover {
+      border-color: rgba(240, 207, 130, 0.3);
+      background: rgba(7,20,47,0.72);
     }
 
     .planner-row span:first-child {
@@ -497,9 +646,11 @@
     }
 
     .submission-card h3 {
+      font-family: var(--font-display);
+      font-weight: 600;
       color: var(--gold-light);
       margin-bottom: 10px;
-      font-size: 1.35rem;
+      font-size: 1.4rem;
     }
 
     .submission-card p {
@@ -520,6 +671,12 @@
       background: rgba(255,255,255,0.045);
       border: 1px solid rgba(255,255,255,0.09);
       color: var(--muted);
+      transition: border-color 0.25s ease, transform 0.25s ease;
+    }
+
+    .submission-step:hover {
+      border-color: rgba(240, 207, 130, 0.3);
+      transform: translateY(-3px);
     }
 
     .submission-step strong {
@@ -598,6 +755,25 @@
       flex-wrap: wrap;
     }
 
+    /* Scroll-reveal */
+    .reveal {
+      opacity: 0;
+      transform: translateY(22px);
+      transition: opacity 0.7s ease, transform 0.7s ease;
+    }
+
+    .reveal.in-view {
+      opacity: 1;
+      transform: none;
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+      .reveal { opacity: 1; transform: none; transition: none; }
+      .equalizer span { animation: none; }
+      .app-card { transition: none; }
+    }
+
     @media (max-width: 880px) {
       .hero-grid,
       .split {
@@ -606,23 +782,23 @@
 
       .feature-grid,
       .planner-showcase,
-      .submission-grid {
+      .submission-grid,
+      .gallery-grid {
         grid-template-columns: 1fr;
+      }
+
+      .feature-card.featured {
+        grid-row: auto;
       }
 
       .nav-links {
         display: none;
       }
-
-      .court {
-        height: auto;
-        grid-template-columns: 1fr;
-      }
     }
   </style>
 </head>
 <body>
-  <header>
+  <header id="site-header">
     <div class="container nav">
       <a class="brand" href="#top" aria-label="Understanding Rallies home">
         <img src="logo.png" alt="Understanding Rallies logo" class="nav-logo" />
@@ -630,6 +806,7 @@
       </a>
       <nav class="nav-links" aria-label="Main navigation">
         <a href="#features">Features</a>
+        <a href="#gallery">Real Output</a>
         <a href="#coaching-planner">Coaching Planner</a>
         <a href="pricing.html">Pricing</a>
         <a href="#store">Microsoft Store</a>
@@ -641,54 +818,39 @@
   </header>
 
   <main id="top">
-    <section class="hero">
+    <section class="hero" id="hero">
       <div class="container hero-grid">
         <div>
-          <div class="eyebrow">Official platform of Understanding Rallies</div>
-          <h1><span>Understanding Rallies</span><br>performance analysis for modern squash.</h1>
-          <p>
+          <div class="eyebrow reveal">Official platform of Understanding Rallies</div>
+          <h1 class="reveal"><span>Understanding Rallies</span><br>performance analysis for modern squash.</h1>
+          <p class="reveal">
             Understanding Rallies builds squash software for both analysis and coaching: helping players and coaches log rallies, analyse shot patterns, plan training sessions, and turn coaching ideas into repeatable development work.
           </p>
-          <div style="margin-bottom: 28px;">
+          <div class="reveal" style="margin-bottom: 28px;">
             <img src="logo.png" alt="UR Squash logo" style="width: 240px; max-width: 100%; filter: drop-shadow(0 12px 26px rgba(0,0,0,0.28));" />
           </div>
 
-          <div class="hero-actions">
+          <div class="hero-actions reveal">
             <a class="button" href="#contact">Contact Understanding Rallies</a>
-            <a class="button secondary" href="#coaching-planner">View Coaching Planner</a>
+            <a class="link-cta" href="#coaching-planner">
+              View Coaching Planner
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+            </a>
           </div>
-          <div class="trust-row" aria-label="Product highlights">
+          <div class="trust-row reveal" aria-label="Product highlights">
             <span><strong>Built for:</strong> squash players &amp; coaches</span>
             <span><strong>Focus:</strong> rally understanding</span>
             <span><strong>Status:</strong> Apps live on the Microsoft Store</span>
           </div>
         </div>
 
-        <aside class="app-card" aria-label="Understanding Rallies app preview">
+        <aside class="app-card reveal" id="app-card" aria-label="Understanding Rallies app screenshot">
           <div class="mock-window">
             <div class="window-top">
-              <span class="dot"></span><span class="dot"></span><span class="dot"></span>
+              <div class="window-dots"><span class="dot"></span><span class="dot"></span><span class="dot"></span></div>
+              <span class="window-hint">UR Logger — actual app screen</span>
             </div>
-            <div class="court">
-              <div class="court-panel">
-                <div class="court-title">Shot placement</div>
-                <div class="grid-court" aria-hidden="true">
-                  <span class="cell"></span><span class="cell active"></span><span class="cell"></span>
-                  <span class="cell"></span><span class="cell"></span><span class="cell active"></span>
-                  <span class="cell active"></span><span class="cell"></span><span class="cell"></span>
-                </div>
-                <div class="metric"><span>Rallies logged</span><strong>24</strong></div>
-              </div>
-              <div class="court-panel">
-                <div class="court-title">Outcome profile</div>
-                <div class="grid-court" aria-hidden="true">
-                  <span class="cell active"></span><span class="cell"></span><span class="cell"></span>
-                  <span class="cell"></span><span class="cell active"></span><span class="cell"></span>
-                  <span class="cell"></span><span class="cell"></span><span class="cell active"></span>
-                </div>
-                <div class="metric"><span>Analysis outputs</span><strong>Ready</strong></div>
-              </div>
-            </div>
+            <img src="assets/logger-screenshot.webp" alt="UR Logger home screen with Video Analysis, Live Logging, Analysis Studio, and Practice Mode" width="1400" height="720" loading="eager" />
           </div>
         </aside>
       </div>
@@ -696,25 +858,36 @@
 
     <section id="features">
       <div class="container">
-        <div class="section-head">
+        <div class="section-head reveal">
           <h2>Software developed by Understanding Rallies.</h2>
           <p>
             Understanding Rallies focuses on building software tools that capture the details that matter in squash: rally flow, shot location, winners, errors, planned training sessions, and repeatable coaching feedback.
           </p>
         </div>
         <div class="feature-grid">
-          <article class="feature-card">
-            <div class="icon">01</div>
-            <h3>Structured rally logging</h3>
-            <p>Record shot-by-shot rally information from match or practice footage using a clear court-based tagging workflow.</p>
+          <article class="feature-card featured reveal">
+            <div>
+              <div class="icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="8"/><circle cx="12" cy="12" r="3.5"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3"/></svg>
+              </div>
+              <h3>Structured rally logging</h3>
+              <p>Record shot-by-shot rally information from match or practice footage using a clear court-based tagging workflow.</p>
+            </div>
+            <div class="equalizer" aria-hidden="true">
+              <span></span><span></span><span></span><span></span><span></span><span></span><span></span>
+            </div>
           </article>
-          <article class="feature-card">
-            <div class="icon">02</div>
+          <article class="feature-card reveal">
+            <div class="icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M4 20V11M12 20V4M20 20v-7"/></svg>
+            </div>
             <h3>Shot and outcome profiles</h3>
             <p>Transform raw rally events into visual summaries that help identify strengths, weaknesses, and patterns of play.</p>
           </article>
-          <article class="feature-card">
-            <div class="icon">03</div>
+          <article class="feature-card reveal">
+            <div class="icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="4" width="14" height="17" rx="2"/><path d="M9 3h6v3H9z"/><path d="M9 13l2 2 4-4"/></svg>
+            </div>
             <h3>Coach-friendly outputs</h3>
             <p>Produce analysis and coaching plans that can support feedback sessions, player development, and more intentional practice design.</p>
           </article>
@@ -722,11 +895,38 @@
       </div>
     </section>
 
-
+    <section id="gallery">
+      <div class="container">
+        <div class="section-head reveal">
+          <h2>Real output, not mockups.</h2>
+          <p>
+            Every panel below is a genuine export from a real UR Logger session — the exact images the app generates after logging a match.
+          </p>
+        </div>
+        <div class="gallery-grid">
+          <a class="gallery-item reveal" href="assets/shot-profile.webp" target="_blank" rel="noopener" aria-label="Open full-size shot profile image">
+            <img src="assets/shot-profile.webp" alt="UR Logger shot profile output: winners by origin, all shots by floor zone, errors by origin, shot depth and directional bias" loading="lazy" width="1400" height="787" />
+            <span class="gallery-caption">Shot profile — winners, errors, depth and direction after every session</span>
+          </a>
+          <a class="gallery-item reveal" href="assets/serve-return.webp" target="_blank" rel="noopener" aria-label="Open full-size serve and return image">
+            <img src="assets/serve-return.webp" alt="UR Logger serve and return output showing serve locations, win rate by serve side, and return landing spots" loading="lazy" width="1400" height="787" />
+            <span class="gallery-caption">Serve &amp; return breakdown — win rate by side, outcomes, and pressure summary</span>
+          </a>
+          <a class="gallery-item reveal" href="assets/front-wall-kde.webp" target="_blank" rel="noopener" aria-label="Open full-size front wall heatmap image">
+            <img src="assets/front-wall-kde.webp" alt="UR Logger front wall density heatmap comparing all shots to won rallies" loading="lazy" width="1400" height="787" />
+            <span class="gallery-caption">Front wall heatmap — shot density across all shots vs. won rallies</span>
+          </a>
+          <a class="gallery-item reveal" href="assets/live-court.webp" target="_blank" rel="noopener" aria-label="Open full-size live logging interface image">
+            <img src="assets/live-court.webp" alt="UR Logger live courtside logging interface with the shot-tagging court grid" loading="lazy" width="1400" height="787" />
+            <span class="gallery-caption">Live courtside logging — tag rallies shot-by-shot as you play</span>
+          </a>
+        </div>
+      </div>
+    </section>
 
     <section id="coaching-planner">
       <div class="container">
-        <div class="section-head">
+        <div class="section-head reveal">
           <h2>UR Coaching Planner — plan, review, and grow your drill library.</h2>
           <p>
             UR Coaching Planner is built for squash coaches who want one place to organise session plans, store drill notes, review sessions, manage squads, and keep their coaching philosophy visible throughout the season.
@@ -734,7 +934,7 @@
         </div>
 
         <div class="planner-showcase">
-          <div class="planner-panel">
+          <div class="planner-panel reveal">
             <h3>Designed around the coaching workflow</h3>
             <p>
               Build a session from warm-up to match play, attach drills to each block, review what happened afterwards, and keep player or squad notes connected to your planning process.
@@ -748,7 +948,7 @@
             </ul>
           </div>
 
-          <div class="planner-panel">
+          <div class="planner-panel reveal">
             <h3>Example session structure</h3>
             <p>
               The app helps keep each session easy to follow, easy to adapt, and easy to export for future reference or sharing.
@@ -763,7 +963,7 @@
           </div>
         </div>
 
-        <div class="submission-card" id="submit-drill">
+        <div class="submission-card reveal" id="submit-drill">
           <h3>Want your drills included in the app?</h3>
           <p>
             Coaches can send their existing drill library file to Understanding Rallies for review. Selected drills may be added to the shared drill library in future app updates, helping other coaches discover new ways to structure sessions.
@@ -780,13 +980,13 @@
 
     <section id="store">
       <div class="container split">
-        <div class="section-head">
+        <div class="section-head reveal">
           <h2>Understanding Rallies apps — available on the Microsoft Store.</h2>
           <p>
             UR Logger supports match logging and analysis, while UR Coaching Planner supports session planning, drill notes, reviews, squads, and coaching goals. Both are part of the wider Understanding Rallies software suite for squash coaches and players.
           </p>
         </div>
-        <div class="privacy-box">
+        <div class="privacy-box reveal">
           <h3>Current release</h3>
           <ul>
             <li>Desktop app for squash rally logging and analysis.</li>
@@ -802,13 +1002,13 @@
 
     <section id="privacy">
       <div class="container">
-        <div class="section-head">
+        <div class="section-head reveal">
           <h2>Privacy policy.</h2>
           <p>
             Understanding Rallies is committed to protecting your privacy. This policy applies to all apps published by Understanding Rallies, including UR Logger and UR Coaching Planner.
           </p>
         </div>
-        <div class="privacy-full">
+        <div class="privacy-full reveal">
           <span class="privacy-meta">Last updated: June 2026</span>
 
           <h3>Overview</h3>
@@ -875,13 +1075,13 @@
 
     <section id="contact">
       <div class="container split">
-        <div class="section-head">
+        <div class="section-head reveal">
           <h2>Contact Understanding Rallies.</h2>
           <p>
             For support, partnership enquiries, drill submissions, or questions about UR Logger, UR Coaching Planner, and future products, contact Understanding Rallies using the business email below.
           </p>
         </div>
-        <div class="contact-card">
+        <div class="contact-card reveal">
           <div class="contact-list">
             <div class="contact-item">
               <strong>Email</strong>
@@ -911,6 +1111,55 @@
 
   <script>
     document.getElementById('year').textContent = new Date().getFullYear();
+
+    var prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    // Scroll-triggered reveal animations
+    var revealEls = document.querySelectorAll('.reveal');
+    if ('IntersectionObserver' in window && !prefersReducedMotion) {
+      var revealObserver = new IntersectionObserver(function (entries) {
+        entries.forEach(function (entry) {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('in-view');
+            revealObserver.unobserve(entry.target);
+          }
+        });
+      }, { threshold: 0.15, rootMargin: '0px 0px -40px 0px' });
+      revealEls.forEach(function (el) { revealObserver.observe(el); });
+    } else {
+      revealEls.forEach(function (el) { el.classList.add('in-view'); });
+    }
+
+    // Sticky header shadow state
+    var header = document.getElementById('site-header');
+    window.addEventListener('scroll', function () {
+      header.classList.toggle('scrolled', window.scrollY > 8);
+    }, { passive: true });
+
+    // Hero cursor spotlight
+    var hero = document.getElementById('hero');
+    if (hero && !prefersReducedMotion) {
+      hero.addEventListener('mousemove', function (e) {
+        var r = hero.getBoundingClientRect();
+        hero.style.setProperty('--mx', (e.clientX - r.left) + 'px');
+        hero.style.setProperty('--my', (e.clientY - r.top) + 'px');
+      });
+    }
+
+    // Subtle tilt on the hero app preview card
+    var appCard = document.getElementById('app-card');
+    if (appCard && !prefersReducedMotion) {
+      appCard.addEventListener('mousemove', function (e) {
+        var r = appCard.getBoundingClientRect();
+        var px = (e.clientX - r.left) / r.width - 0.5;
+        var py = (e.clientY - r.top) / r.height - 0.5;
+        appCard.style.transform = 'perspective(1000px) rotateX(' + (py * -6) + 'deg) rotateY(' + (px * 8) + 'deg)';
+      });
+      appCard.addEventListener('mouseleave', function () {
+        appCard.style.transform = 'perspective(1000px) rotateX(0deg) rotateY(0deg)';
+      });
+    }
+
   </script>
 </body>
 </html>
