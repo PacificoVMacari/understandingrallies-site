@@ -2,7 +2,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="description" content="Understanding Rallies develops squash software for performance analysis and coaching, including UR Logger and UR Coaching Planner — tools for logging rallies, planning sessions, reviewing players, and building a shared drill library." />
+  <meta name="description" content="Understanding Rallies develops squash software for performance analysis and coaching, including UR Logger and UR Coaching Planner, with tools for logging rallies, planning sessions, reviewing players, and building a shared drill library." />
   <title>Understanding Rallies | Squash Analytics & Coaching Software</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -97,10 +97,14 @@
 
     .nav-links {
       display: flex;
-      gap: 26px;
+      gap: 20px;
       align-items: center;
       color: var(--muted);
       font-size: 0.95rem;
+    }
+
+    .nav-links a {
+      white-space: nowrap;
     }
 
     .nav-links a:not(.button) {
@@ -848,7 +852,7 @@
           <div class="mock-window">
             <div class="window-top">
               <div class="window-dots"><span class="dot"></span><span class="dot"></span><span class="dot"></span></div>
-              <span class="window-hint">UR Logger — actual app screen</span>
+              <span class="window-hint">UR Logger actual app screen</span>
             </div>
             <img src="assets/logger-screenshot.webp" alt="UR Logger home screen with Video Analysis, Live Logging, Analysis Studio, and Practice Mode" width="1400" height="720" loading="eager" />
           </div>
@@ -871,7 +875,7 @@
                 <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="8"/><circle cx="12" cy="12" r="3.5"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3"/></svg>
               </div>
               <h3>Structured rally logging</h3>
-              <p>Record shot-by-shot rally information from match or practice footage using a clear court-based tagging workflow.</p>
+              <p>Record rally information one shot at a time from match or practice footage using a clear court tagging workflow.</p>
             </div>
             <div class="equalizer" aria-hidden="true">
               <span></span><span></span><span></span><span></span><span></span><span></span><span></span>
@@ -888,7 +892,7 @@
             <div class="icon" aria-hidden="true">
               <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="4" width="14" height="17" rx="2"/><path d="M9 3h6v3H9z"/><path d="M9 13l2 2 4-4"/></svg>
             </div>
-            <h3>Coach-friendly outputs</h3>
+            <h3>Outputs designed for coaches</h3>
             <p>Produce analysis and coaching plans that can support feedback sessions, player development, and more intentional practice design.</p>
           </article>
         </div>
@@ -900,25 +904,25 @@
         <div class="section-head reveal">
           <h2>Real output, not mockups.</h2>
           <p>
-            Every panel below is a genuine export from a real UR Logger session — the exact images the app generates after logging a match.
+            Every panel below is a genuine export from a real UR Logger session. These are the exact images the app generates after logging a match.
           </p>
         </div>
         <div class="gallery-grid">
-          <a class="gallery-item reveal" href="assets/shot-profile.webp" target="_blank" rel="noopener" aria-label="Open full-size shot profile image">
+          <a class="gallery-item reveal" href="assets/shot-profile.webp" target="_blank" rel="noopener" aria-label="Open the complete shot profile image">
             <img src="assets/shot-profile.webp" alt="UR Logger shot profile output: winners by origin, all shots by floor zone, errors by origin, shot depth and directional bias" loading="lazy" width="1400" height="787" />
-            <span class="gallery-caption">Shot profile — winners, errors, depth and direction after every session</span>
+            <span class="gallery-caption">Shot profile showing winners, errors, depth and direction after every session</span>
           </a>
-          <a class="gallery-item reveal" href="assets/serve-return.webp" target="_blank" rel="noopener" aria-label="Open full-size serve and return image">
+          <a class="gallery-item reveal" href="assets/serve-return.webp" target="_blank" rel="noopener" aria-label="Open the complete serve and return image">
             <img src="assets/serve-return.webp" alt="UR Logger serve and return output showing serve locations, win rate by serve side, and return landing spots" loading="lazy" width="1400" height="787" />
-            <span class="gallery-caption">Serve &amp; return breakdown — win rate by side, outcomes, and pressure summary</span>
+            <span class="gallery-caption">Serve &amp; return breakdown showing win rate by side, outcomes, and pressure summary</span>
           </a>
-          <a class="gallery-item reveal" href="assets/front-wall-kde.webp" target="_blank" rel="noopener" aria-label="Open full-size front wall heatmap image">
+          <a class="gallery-item reveal" href="assets/front-wall-kde.webp" target="_blank" rel="noopener" aria-label="Open the complete front wall heatmap image">
             <img src="assets/front-wall-kde.webp" alt="UR Logger front wall density heatmap comparing all shots to won rallies" loading="lazy" width="1400" height="787" />
-            <span class="gallery-caption">Front wall heatmap — shot density across all shots vs. won rallies</span>
+            <span class="gallery-caption">Front wall heatmap comparing shot density across all shots and won rallies</span>
           </a>
-          <a class="gallery-item reveal" href="assets/live-court.webp" target="_blank" rel="noopener" aria-label="Open full-size live logging interface image">
-            <img src="assets/live-court.webp" alt="UR Logger live courtside logging interface with the shot-tagging court grid" loading="lazy" width="1400" height="787" />
-            <span class="gallery-caption">Live courtside logging — tag rallies shot-by-shot as you play</span>
+          <a class="gallery-item reveal" href="assets/live-court.webp" target="_blank" rel="noopener" aria-label="Open the complete live logging interface image">
+            <img src="assets/live-court.webp" alt="UR Logger live courtside logging interface with the court grid used to tag shots" loading="lazy" width="1400" height="787" />
+            <span class="gallery-caption">Live courtside logging lets you tag each shot as you play</span>
           </a>
         </div>
       </div>
@@ -927,7 +931,7 @@
     <section id="coaching-planner">
       <div class="container">
         <div class="section-head reveal">
-          <h2>UR Coaching Planner — plan, review, and grow your drill library.</h2>
+          <h2>UR Coaching Planner helps you plan, review, and grow your drill library.</h2>
           <p>
             UR Coaching Planner is built for squash coaches who want one place to organise session plans, store drill notes, review sessions, manage squads, and keep their coaching philosophy visible throughout the season.
           </p>
@@ -937,14 +941,14 @@
           <div class="planner-panel reveal">
             <h3>Designed around the coaching workflow</h3>
             <p>
-              Build a session from warm-up to match play, attach drills to each block, review what happened afterwards, and keep player or squad notes connected to your planning process.
+              Build a session from warm up to match play, attach drills to each block, review what happened afterwards, and keep player or squad notes connected to your planning process.
             </p>
             <ul class="planner-list">
               <li><strong>Plan:</strong> create structured sessions using a drill library and session builder.</li>
               <li><strong>Calendar:</strong> view planned sessions by date and reopen them when needed.</li>
-              <li><strong>Review:</strong> write post-session reflections, player notes, and improvement points.</li>
+              <li><strong>Review:</strong> write reflections after each session, player notes, and improvement points.</li>
               <li><strong>Squads:</strong> organise groups, profiles, levels, and session history.</li>
-              <li><strong>Philosophy:</strong> store your coaching values, approach, and player-development goals.</li>
+              <li><strong>Philosophy:</strong> store your coaching values, approach, and player development goals.</li>
             </ul>
           </div>
 
@@ -955,8 +959,8 @@
             </p>
             <div class="planner-mock" aria-label="UR Coaching Planner example session layout">
               <div class="planner-row"><span>Warm up</span><strong>Movement patterns + activation</strong><em class="planner-tag">10 min</em></div>
-              <div class="planner-row"><span>Drill</span><strong>Back-court pressure into volley option</strong><em class="planner-tag">20 min</em></div>
-              <div class="planner-row"><span>Drill</span><strong>Front-court decision making</strong><em class="planner-tag">15 min</em></div>
+              <div class="planner-row"><span>Drill</span><strong>Back court pressure into volley option</strong><em class="planner-tag">20 min</em></div>
+              <div class="planner-row"><span>Drill</span><strong>Front court decision making</strong><em class="planner-tag">15 min</em></div>
               <div class="planner-row"><span>Match</span><strong>Conditioned games with target outcomes</strong><em class="planner-tag">20 min</em></div>
               <div class="planner-row"><span>Review</span><strong>Player notes, rating, and next focus</strong><em class="planner-tag">Saved</em></div>
             </div>
@@ -981,7 +985,7 @@
     <section id="store">
       <div class="container split">
         <div class="section-head reveal">
-          <h2>Understanding Rallies apps — available on the Microsoft Store.</h2>
+          <h2>Understanding Rallies apps are available on the Microsoft Store.</h2>
           <p>
             UR Logger supports match logging and analysis, while UR Coaching Planner supports session planning, drill notes, reviews, squads, and coaching goals. Both are part of the wider Understanding Rallies software suite for squash coaches and players.
           </p>
@@ -992,7 +996,7 @@
             <li>Desktop app for squash rally logging and analysis.</li>
             <li>Log matches live courtside or from video footage.</li>
             <li>Automatic shot profile and winning rally breakdown generated after every session.</li>
-            <li>All data stored locally — no account required.</li>
+            <li>All data is stored locally, with no account required.</li>
             <li>Available on the Microsoft Store for Windows.</li>
             <li>UR Coaching Planner helps coaches build sessions, manage squads, review training, and develop a reusable drill library.</li>
           </ul>
@@ -1024,7 +1028,7 @@
             <li>Match event logs (JSON and CSV files) saved to your Documents folder</li>
             <li>Analysis output images generated from your session data</li>
             <li>A keymap preferences file storing your custom keyboard shortcuts</li>
-            <li>A first-launch flag file used to show the tutorial on first use</li>
+            <li>A first launch flag file used to show the tutorial on first use</li>
             <li>Coaching Planner session plans, reviews, squad profiles, coaching philosophy notes, goals, and custom drill entries</li>
           </ul>
           <p>None of these files are uploaded to Understanding Rallies or any third party.</p>
@@ -1040,18 +1044,18 @@
 
           <h3>Analytics and tracking</h3>
           <p>
-            UR Logger does not use any analytics services, advertising networks, or third-party tracking tools. No usage data is collected or transmitted.
+            UR Logger does not use any analytics services, advertising networks, or tracking tools from other companies. No usage data is collected or transmitted.
           </p>
 
           <hr class="privacy-divider" />
 
-          <h3>Third-party software</h3>
+          <h3>Third party software</h3>
           <p>UR Logger bundles the following open source libraries. These operate entirely locally and do not transmit data:</p>
           <ul>
-            <li>FFmpeg — video processing (LGPL 2.1)</li>
-            <li>Qt / PySide6 — user interface (LGPL 3.0)</li>
-            <li>OpenCV — video analysis (Apache 2.0)</li>
-            <li>NumPy and pandas — data processing (BSD)</li>
+            <li>FFmpeg for video processing (LGPL 2.1)</li>
+            <li>Qt / PySide6 for the user interface (LGPL 3.0)</li>
+            <li>OpenCV for video analysis (Apache 2.0)</li>
+            <li>NumPy and pandas for data processing (BSD)</li>
           </ul>
           <p>Full license notices are included within the installed application.</p>
 
